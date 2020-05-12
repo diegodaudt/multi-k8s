@@ -20,3 +20,4 @@ after_success:
     - docker push diegodaudt/multi-nginx
     - docker push diegodaudt/multi-server
     - docker push diegodaudt/multi-worker
+    - docker logout
