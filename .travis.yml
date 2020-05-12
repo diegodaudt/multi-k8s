@@ -1,0 +1,22 @@
+language: generic
+sudo: required
+ - docker
+
+before_install:
+    - docker build -t diegodaudt/react-test -f ./client/Dockerfile.dev ./client
+
+script:
+    - docker run -e CI=true diegodaudt/react-test npm test
+
+after_success:
+    - docker build -t diegodaudt/multi-client ./client
+    - docker build -t diegodaudt/multi-nginx ./nginx
+    - docker build -t diegodaudt/multi-server ./server
+    - docker build -t diegodaudt/multi-worker ./worker
+    # Log in to the docker CLI
+    - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+    # Take those images and push them to docker hub
+    - docker push diegodaudt/multi-client
+    - docker push diegodaudt/multi-nginx
+    - docker push diegodaudt/multi-server
+    - docker push diegodaudt/multi-worker
