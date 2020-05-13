@@ -21,3 +21,15 @@ after_success:
     - docker push diegodaudt/multi-server
     - docker push diegodaudt/multi-worker
     - docker logout
+
+deploy:
+    provider: elasticbeanstalk
+    region: us-west-2
+    app: multi-docker
+    env: MultiDocker-env
+    bucker_name: elasticbeanstalk-us-west-2-876325473964
+    bucket_path: multi-docker
+    on:
+        branch: master
+    access_key_id: $AWS_ACCESS_KEY
+    secret_access_key: $AWS_SECRET_KEY
